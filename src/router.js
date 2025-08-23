@@ -24,11 +24,140 @@ const routes = {
     // "/dashboard/solicitudes": ,
 };
 
+const isAuthenticated = () => {
+  return !!localStorage.getItem("token");
+};
+
 export const handleLocation = () => {
     const path = window.location.pathname;
     const route = routes[path];
 
-    const publicRoutes = ['/', '/404']
+    const publicRoutes = ["/", "/404"];
+
+    // Validación: si no está autenticado y la ruta no es pública → redirigir al login
+    if (!isAuthenticated() && !publicRoutes.includes(path)) {
+        window.history.pushState({}, "", "/login");
+        return loginPage();
+    }
+
+    if (isAuthenticated) {
+        document.getElementById('app').innerHTML = `
+        <div
+        id="sidebar"
+        class="w-[225px] border-r-[1.5px] border-gray-200 flex flex-col"
+      >
+        <!-- Title menu -->
+        <div class="w-full p-4 box-border border-b-[1.5px] border-gray-200">
+          <h2 class="font-semibold scale-y-[1.2]">Gestión de Personal</h2>
+          <span class="text-xs text-gray-500">Solicitudes y Trámites</span>
+        </div>
+
+        <!-- info personal -->
+        <div
+          id="personal-info"
+          class="p-4 flex items-center gap-2 box-border border-b-[1.5px] border-gray-200"
+        >
+          <div
+            class="bg-black w-10 h-10 rounded-full flex items-center justify-center text-white"
+          >
+            JD
+          </div>
+          <div class="flex flex-col gap-0">
+            <h2 class="text-sm font-semibold">Juan Díaz</h2>
+            <span class="text-xs text-gray-500">Administrador</span>
+          </div>
+        </div>
+
+        <!-- Menu OPtions -->
+        <menu id="menu" class="flex-1 flex flex-col p-2.5 gap-2">
+          <a
+            href="/dashboard"
+            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+          >
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            <span class="text-xs font-medium text-black">Dashboard</span>
+          </a>
+          <a
+            href="/dashboard/solicitudes"
+            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200 relative"
+          >
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            <span class="text-xs font-medium text-black">Solicitudes</span>
+            <div class="absolute right-4 bg-gray-200 px-2 rounded">
+              <span class="text-xs text-black font-medium">12</span>
+            </div>
+          </a>
+          <a
+            href="/dashboard/nueva-solicitud"
+            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+          >
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span class="text-xs font-medium text-black">Nueva Solicitud</span>
+          </a>
+          <a
+            href="/dashboard/calendario"
+            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+          >
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+            <span class="text-xs font-medium text-black">Calendario</span>
+          </a>
+          <a
+            href="/dashboard/mi-perfil"
+            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+          >
+            <i data-lucide="user-round" class="w-4 h-4"></i>
+            <span class="text-xs font-medium text-black">Mi perfil</span>
+          </a>
+          <a
+            href="/dashboard/empleados"
+            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+          >
+            <i data-lucide="users" class="w-4 h-4"></i>
+            <span class="text-xs font-medium text-black">Empleados</span>
+          </a>
+          <a
+            href="/dashboard/reportes"
+            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+          >
+            <i data-lucide="chart-column" class="w-4 h-4"></i>
+            <span class="text-xs font-medium text-black">Reportes</span>
+          </a>
+          <a
+            href="/dashboard/configuracion"
+            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+          >
+            <i data-lucide="settings" class="w-4 h-4"></i>
+            <span class="text-xs font-medium text-black">Configuración</span>
+          </a>
+        </menu>
+
+        <!-- actions users / logout / notifications -->
+        <div
+          id=""
+          class="box-border border-t-[1.5px] border-gray-200 flex flex-col p-2.5 gap-2"
+        >
+          <a
+            href="dashboard/"
+            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200 relative"
+          >
+            <i data-lucide="bell" class="w-4 h-4"></i>
+            <span class="text-xs font-medium text-black">Notificaciones</span>
+            <div
+              class="absolute right-4 bg-red-500 px-1 py-0.5 rounded flex items-center justify-center"
+            >
+              <span class="text-xs text-white font-medium">12</span>
+            </div>
+          </a>
+          <a
+            href="dashboard/"
+            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-red-200 rounded cursor-pointer duration-200"
+          >
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span class="text-xs font-medium text-black">Cerrar Sesión</span>
+          </a>
+        </div>
+         </div>`
+    }
 
     if (route) {
         route();
