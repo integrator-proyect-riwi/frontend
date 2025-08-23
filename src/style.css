@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+:root {
+  font-family: system-ui, "Segoe UI", Roboto, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* color-scheme: light dark; */
+  color: #191919;
+  background-color: #fff/*#f4f4f4*/;
+
+  /* Priorities */
+  --priority-normal-bg: #dbeaff;
+  --priority-normal-text: #4f6fcd;
+
+  --priority-urgent-bg: #ffe3e2;
+  --priority-urgent-text: #903e4c;
+
+  /* Status */
+  --status-pending-bg: #ffeed4; 
+  --status-pending-text: #a53d15; 
+
+  --status-approved-bg: #dbfce7;
+  --status-approved-text: #2d733b;
+
+  --color-extra: #191919;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.button-primary {
+  background-color: #191919;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  padding: 6px 12px;
+  height: fit-content;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.button-primary:hover {
+  background-color: #292929;
+}
