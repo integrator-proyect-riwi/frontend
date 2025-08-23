@@ -1,5 +1,5 @@
+import { loginPage } from "./auth/pages";
 import {
-    loginPage,
     calendarPage,
     configurationPage,
     dashboardPage,
@@ -8,17 +8,27 @@ import {
     reportsPage,
     newRequestPage,
     requestPage,
-} from "./auth/pages";
+} from "./pages";
 
 const routes = {
     "/login": loginPage,
-    "/dashboard": "dashboardPage",
-    "/dashboard/solicitudes": "requestPage",
+    "/dashboard": dashboardPage,
+    "/dashboard/solicitudes": requestPage,
+    "/dashboard/new-request": newRequestPage,
+    "/dashboard/calendar": calendarPage,
+    "/dashboard/my-profile": myProfilePage,
+    "/dashboard/empleados": employeesPage,
+    "/dashboard/reportes": reportsPage,
+    "/dashboard/configuracion": configurationPage,
+    // "/dashboard/solicitudes": ,
+    // "/dashboard/solicitudes": ,
 };
 
 export const handleLocation = () => {
     const path = window.location.pathname;
     const route = routes[path];
+
+    const publicRoutes = ['/', '/404']
 
     if (route) {
         route();
