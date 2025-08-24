@@ -1,10 +1,8 @@
 import { createIcons, icons } from "lucide";
 
 export async function dashboardPage() {
-    const content = document.getElementById("content");
-    if (!content) return;
     
-    content.innerHTML = `
+    document.getElementById("content").innerHTML = `
     <div id="dashboard" class="flex-1">
       <div id="title" class="w-full flex justify-between p-5">
         <div>
@@ -14,7 +12,7 @@ export async function dashboardPage() {
           </p>
         </div>
         <div class="flex items-end">
-          <a href="/dashboard/nueva-solicitud" class="button-primary">
+          <a href="#/dashboard/nueva-solicitud" class="button-primary">
             <i data-lucide="calendar" class="w-4 h-4"></i>
             Generar Reporte
           </a>
@@ -23,5 +21,6 @@ export async function dashboardPage() {
     </div>
   `;
 
+    console.log("Dashboard cargado correctamente");
     createIcons({ icons });
 }

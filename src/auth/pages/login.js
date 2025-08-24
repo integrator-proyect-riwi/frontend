@@ -1,16 +1,13 @@
-      
-
 import { createIcons, icons } from "lucide";
+import { auth } from "../auth";
 
+export const loginPage = async() => {
+    const content = document.getElementById("content");
 
-export async function loginPage() {
-  const content = document.getElementById("app");
-  if (!content) return;
-
-  content.innerHTML = `
+    content.innerHTML = `
     <section
         id="login-page"
-        class="flex-1 gap-10 flex items-center justify-center bg-[#eaf2ff]"
+        class="flex-1 h-full gap-10 flex items-center justify-center bg-[#eaf2ff]"
       >
         <div id="welcome" class="">
           <div class="flex items-center gap-5 w-[400px]">
@@ -64,6 +61,7 @@ export async function loginPage() {
                 ></i>
                 <input
                   type="email"
+                  name="email"
                   placeholder="usuario@empresa.com"
                   class="bg-gray-200 pl-10 py-2 flex-1 rounded outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-sm"
                 />
@@ -71,7 +69,7 @@ export async function loginPage() {
             </div>
             <div>
               <label
-                for="email"
+                for="poassword"
                 class="block text-sm font-medium text-gray-700 mb-1"
                 >Contraseña</label
               >
@@ -82,6 +80,7 @@ export async function loginPage() {
                 ></i>
                 <input
                   type="password"
+                  name="password"
                   placeholder="Ingresa tu contraseña"
                   class="bg-gray-200 pl-10 py-2 flex-1 rounded outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-sm"
                 />
@@ -114,6 +113,22 @@ export async function loginPage() {
         </form>
       </section>
   `;
+
+  document.getElementById("form-login").onsubmit = async (e) => {
+    e.preventDefault();
+    try {
+
+      if (e.target.email.value.trim() === '' || e.target.password.value.trim() === '') {
+        throw new Error('Los campos no pueden estar vacios')
+      }
+      console.log('Inicio con exito: ', e.target.email.value, e.target.password.value);
+      await auth.login(e.target.email.value, e.target.password.value);
+
+      return location.hash = "#/dashboard";
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   createIcons({ icons });
 }
