@@ -1,7 +1,7 @@
 import { createIcons, icons } from "lucide";
 import { auth } from "../auth";
 
-export const loginPage = async() => {
+export const loginPage = async () => {
     const content = document.getElementById("content");
 
     content.innerHTML = `
@@ -60,6 +60,7 @@ export const loginPage = async() => {
                   class="w-4 h-4 text-gray-500 absolute left-3 outline-gray-500"
                 ></i>
                 <input
+                  id="email-input"
                   type="email"
                   name="email"
                   placeholder="usuario@empresa.com"
@@ -79,6 +80,7 @@ export const loginPage = async() => {
                   class="w-4 h-4 text-gray-500 absolute left-3 outline-gray-500"
                 ></i>
                 <input
+                  id="password-input"
                   type="password"
                   name="password"
                   placeholder="Ingresa tu contraseña"
@@ -104,31 +106,89 @@ export const loginPage = async() => {
 
           <hr class="my-5 border-t-gray-300" />
 
+          <input type="hidden" name="role" id="role-input" />
+
           <!-- credentials -->
-          <div>
-            <p>empleado</p>
-            <p>Supervisor</p>
-            <p>rh admin</p>
+          <div class="flex flex-col gap-3">
+            <button type="button" id="login-employee" class="border-gray-300 border w-full text-left p-2 rounded-md hover:bg-gray-200 cursor-pointer" data-role="employee">
+              <span class="font-medium text-sm">
+                Empleado
+              </span>
+              <p class="text-sm text-gray-500 font-medium">
+                empleado@empresa.com
+              </p>
+            </button>
+            <button type="button" id="login-supervisor" class="border-gray-300 border w-full text-left p-2 rounded-md hover:bg-gray-200 cursor-pointer" data-role="supervisor">
+              <span class="font-medium text-sm">
+                Supervisor
+              </span>
+              <p class="text-sm text-gray-500 font-medium">
+                supervisor@empresa.com
+              </p>
+            </button>
+            <button type="button" id="login-admin" class="border-gray-300 border w-full text-left p-2 rounded-md hover:bg-gray-200 cursor-pointer" data-role="admin">
+              <span class="font-medium text-sm">
+                RH Admin
+              </span>
+              <p class="text-sm text-gray-500 font-medium">
+                admin@empresa.com
+              </p>
+            </button>
           </div>
         </form>
       </section>
   `;
+    const loginForm = document.getElementById("form-login");
+    const buttons = document.querySelectorAll("[data-role]");
+    const roleInput = document.getElementById("role-input");
+    const emailInput = document.getElementById("email-input");
+    const passwordInput = document.getElementById("password-input");
 
-  document.getElementById("form-login").onsubmit = async (e) => {
-    e.preventDefault();
-    try {
+    const demoCredentials = {
+        employee: { email: "empleado@empresa.com", password: "123456" },
+        supervisor: { email: "supervisor@empresa.com", password: "123456" },
+        admin: { email: "admin@empresa.com", password: "123456" },
+    };
 
-      if (e.target.email.value.trim() === '' || e.target.password.value.trim() === '') {
-        throw new Error('Los campos no pueden estar vacios')
-      }
-      console.log('Inicio con exito: ', e.target.email.value, e.target.password.value);
-      await auth.login(e.target.email.value, e.target.password.value);
+    buttons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            const role = e.currentTarget.dataset.role;
+            roleInput.value = role;
 
-      return location.hash = "#/dashboard";
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+            // Rellenar automáticamente el form con las credenciales de prueba
+            emailInput.value = demoCredentials[role].email;
+            passwordInput.value = demoCredentials[role].password;
 
-  createIcons({ icons });
-}
+            // Feedback visual
+            buttons.forEach((b) =>
+                b.classList.remove("bg-blue-100", "border-blue-500")
+            );
+            e.currentTarget.classList.add("bg-blue-100", "border-blue-500");
+
+            console.log("Rol seleccionado:", role);
+        });
+    });
+    loginForm.onsubmit = async (e) => {
+        e.preventDefault();
+        try {
+            if (
+                e.target.email.value.trim() === "" ||
+                e.target.password.value.trim() === ""
+            ) {
+                throw new Error("Los campos no pueden estar vacios");
+            }
+            console.log(
+                "Inicio con exito: ",
+                e.target.email.value,
+                e.target.password.value
+            );
+            await auth.login(e.target.email.value, e.target.password.value);
+
+            return (location.hash = "#/dashboard");
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+
+    createIcons({ icons });
+};
