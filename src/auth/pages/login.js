@@ -155,17 +155,13 @@ export const loginPage = async () => {
             const role = e.currentTarget.dataset.role;
             roleInput.value = role;
 
-            // Rellenar automáticamente el form con las credenciales de prueba
             emailInput.value = demoCredentials[role].email;
             passwordInput.value = demoCredentials[role].password;
 
-            // Feedback visual
             buttons.forEach((b) =>
                 b.classList.remove("bg-blue-100", "border-blue-500")
             );
             e.currentTarget.classList.add("bg-blue-100", "border-blue-500");
-
-            console.log("Rol seleccionado:", role);
         });
     });
     loginForm.onsubmit = async (e) => {
