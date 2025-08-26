@@ -46,3 +46,42 @@
 .button-primary:hover {
   background-color: #292929;
 }
+
+
+th {
+  text-align: left;
+  padding: 10px;
+}
+
+th, td {
+  padding: 10px;
+}
+
+
+/* Prorities */
+.status-pending {
+  background: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+.status-approved {
+  background: var(--status-approved-bg);
+  color: var(--status-approved-text);
+}
+.status-under-review {
+  background: var(--priority-normal-bg);
+  color: var(--priority-normal-text);
+}
+.status-rejected {
+  background: var(--priority-urgent-bg);
+  color: var(--priority-urgent-text);
+}
+
+/* status */
+.status-normal {
+  background: var(--priority-normal-bg);
+  color: var(--priority-normal-text);
+}
+.status-urgent {
+  background: var(--priority-urgent-bg);
+  color: var(--priority-urgent-text);
+}
