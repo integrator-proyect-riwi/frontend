@@ -2,7 +2,7 @@ import { createIcons, icons } from "lucide";
 
 export async function newRequestPage() {
     document.getElementById("content").innerHTML = `
-        <div id="dashboard" class="w-[740px]">
+        <div id="new request" class="w-[740px]">
           <div id="title" class="w-full flex flex-col p-5">
             <!-- title -->
             <div>
@@ -187,5 +187,7 @@ export async function newRequestPage() {
         </div>
   `;
 
+
+  // form
     createIcons({ icons });
 }
