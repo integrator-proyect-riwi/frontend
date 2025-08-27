@@ -47,7 +47,6 @@
   background-color: #292929;
 }
 
-
 th {
   text-align: left;
   padding: 10px;
@@ -56,7 +55,6 @@ th {
 th, td {
   padding: 10px;
 }
-
 
 /* Prorities */
 .status-pending {
