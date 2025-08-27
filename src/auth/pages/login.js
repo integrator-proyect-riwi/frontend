@@ -164,6 +164,7 @@ export const loginPage = async () => {
             e.currentTarget.classList.add("bg-blue-100", "border-blue-500");
         });
     });
+
     loginForm.onsubmit = async (e) => {
         e.preventDefault();
         try {
@@ -173,11 +174,7 @@ export const loginPage = async () => {
             ) {
                 throw new Error("Los campos no pueden estar vacios");
             }
-            console.log(
-                "Inicio con exito: ",
-                e.target.email.value,
-                e.target.password.value
-            );
+
             await auth.login(e.target.email.value, e.target.password.value);
 
             return (location.hash = "#/dashboard");
