@@ -118,14 +118,6 @@ export const loginPage = async () => {
                 empleado@empresa.com
               </p>
             </button>
-            <button type="button" id="login-supervisor" class="border-gray-300 border w-full text-left p-2 rounded-md hover:bg-gray-200 cursor-pointer" data-role="supervisor">
-              <span class="font-medium text-sm">
-                Supervisor
-              </span>
-              <p class="text-sm text-gray-500 font-medium">
-                supervisor@empresa.com
-              </p>
-            </button>
             <button type="button" id="login-admin" class="border-gray-300 border w-full text-left p-2 rounded-md hover:bg-gray-200 cursor-pointer" data-role="admin">
               <span class="font-medium text-sm">
                 RH Admin
@@ -146,7 +138,6 @@ export const loginPage = async () => {
 
     const demoCredentials = {
         employee: { email: "empleado@empresa.com", password: "123456" },
-        supervisor: { email: "supervisor@empresa.com", password: "123456" },
         admin: { email: "admin@empresa.com", password: "123456" },
     };
 
