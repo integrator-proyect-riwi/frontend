@@ -40,6 +40,10 @@ export function router() {
     if (isAuthenticated) {
         window.document.getElementById("sidebar").classList.remove("hidden");
         window.document.getElementById("sidebar").classList.add("flex");
+        console.log(user);
+        
+        window.document.getElementById("personal-info-name").textContent = user.username
+        window.document.getElementById("personal-info-role").textContent = user.role
     } else {
         window.document.getElementById("sidebar").classList.remove("flex");
         window.document.getElementById("sidebar").classList.add("hidden");

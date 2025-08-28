@@ -20,23 +20,35 @@ export const auth = {
 
     logout() {
         this.currentUser = null;
-        localStorage.clear();
+        this.token = null;
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
     },
 
     isAuthenticated() {
         if (this.currentUser) return true;
 
         const savedUser = localStorage.getItem("user");
-        if (savedUser) {
+        const savedToken = localStorage.getItem("token");
+
+        if (savedUser && savedToken) {
             this.currentUser = JSON.parse(savedUser);
+            this.token = savedToken;
             return true;
         }
 
         return false;
     },
-
-    // Obtener usuario actual
+    
     getUser() {
-        return this.currentUser;
+        if (this.currentUser) return this.currentUser;
+
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) {
+            this.currentUser = JSON.parse(savedUser);
+            return this.currentUser;
+        }
+
+        return null;
     },
 };
