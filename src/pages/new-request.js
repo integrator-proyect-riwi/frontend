@@ -1,4 +1,5 @@
 import { createIcons, icons } from "lucide";
+import { api } from "../auth/api/api";
 
 export async function newRequestPage() {
     document.getElementById("content").innerHTML = `
@@ -26,6 +27,8 @@ export async function newRequestPage() {
                   <div class="">
                     <label class="text-sm font-medium">Tipo de Solicitud *</label>
                     <select
+                      id="type_request"
+                      name="type_request"
                       class="bg-[#f3f3f5] text-sm w-full mt-0.5 py-1 px-2 rounded outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                     >
                       <option value="" disabled selected>Selecciona el tipo de solicitud</option>
@@ -44,6 +47,8 @@ export async function newRequestPage() {
                   <div class="">
                     <label class="text-sm font-medium">Supervisor Asignado *</label>
                     <select
+                      id="supervisor"
+                      name="supervisor"
                       class="bg-[#f3f3f5] text-sm w-full mt-0.5 py-1 px-2 rounded outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                     >
                       <option value="" disabled selected>Selecciona el supervisor</option>
@@ -57,14 +62,18 @@ export async function newRequestPage() {
 
                   <!-- Urgente -->
                   <div class="flex items-center gap-1 col-span-2">
-                    <input type="checkbox" id="urgent" />
+                    <input 
+                      name="urgent"
+                      id="urgent"
+                      type="checkbox"
+                    />
                     <label for="urgent" class="text-xs font-medium select-none cursor-pointer">Marcar como urgente</label>
                   </div>
                 </div>
               </div>
-              <!-- ------------------------------------------------------- fin ------------------------------------------------------- -->
+              <!-- ------------------------------------------------------- end ------------------------------------------------------- -->
               
-              <!-- -------------------------------------------------------  Inicio  ------------------------------------------------------- -->
+              <!-- -------------------------------------------------------  Start  ------------------------------------------------------- -->
               <div id="" class="p-5 border rounded-xl flex flex-col border-gray-300 mt-5">
                 <div class="">
                   <!-- title label -->
@@ -73,34 +82,37 @@ export async function newRequestPage() {
 
                 <div class="grid grid-cols-2 gap-5 mt-3">
                   <!-- Tipo de Solicitud -->
-                  <!-- Fecha de inicio -->
+                  <!-- Fecha de Start -->
                   <div class="">
-                    <label class="text-sm font-medium">Fecha de inicio *</label>
+                    <label class="text-sm font-medium">Fecha de Start *</label>
                     <input 
+                      name="start_date"
+                      id="start_date"
                       type="date"
                       class="border text-sm border-gray-300 w-full rounded py-1 mt-0.5 px-3 outline-none focus:ring-2 focus:ring-gray-500"
                     />
                   </div>
 
-                  <!-- Fecha de Fin -->
+                  <!-- Fecha de end -->
                   <div class="">
-                    <label class="text-sm ">Fecha de Fin *</label>
+                    <label class="text-sm ">Fecha de end *</label>
                     <input 
+                      name="end_date"
+                      id="end_date"
                       type="date" 
                       class="border text-sm border-gray-300 w-full rounded py-1 mt-0.5 px-3 outline-none focus:ring-2 focus:ring-gray-500"
                     />
                   </div>
 
-                  <!-- Urgente -->
                   <div class="flex gap-2 col-span-2 border rounded-xl p-3 border-gray-300">
                     <i data-lucide="circle-alert" class="w-4 h-4"></i>
                     <p class="text-xs text-gray-500">Las solicitudes deben ser enviadas con al menos 48 horas de anticipación, excepto en casos de emergencia médica.</p>
                   </div>
                 </div>
               </div>
-              <!-- -------------------------------------------------------  fin  ------------------------------------------------------- -->
+              <!-- -------------------------------------------------------  end  ------------------------------------------------------- -->
 
-              <!-- -------------------------------------------------------  Inicio  ------------------------------------------------------- -->
+              <!-- -------------------------------------------------------  Start  ------------------------------------------------------- -->
               <div id="" class="p-5 border rounded-xl flex flex-col border-gray-300 mt-5">
                 <div class="">
                   <!-- title label -->
@@ -109,31 +121,29 @@ export async function newRequestPage() {
 
                 <div class="flex flex-col gap-3 mt-3">
                   <!-- Tipo de Solicitud -->
-                  <!-- Fecha de inicio -->
+                  <!-- Fecha de Start -->
                   <div class="">
                     <label class="text-sm font-medium">Motivo de la solicitud *</label>
                     <textarea 
-                      name="" 
-                      id=""
-                      value=""
+                      name="reason" 
+                      id="reason"
                       placeholder="Describe brevemente el motivo de tu solicitud..." 
                       class="bg-[#f3f3f5] w-full rounded-md focus:outline-gray-500 p-3 resize-none text-xs min-h-10 placeholder:text-[#8991a0]"></textarea>
                   </div>
                   <div class="">
                     <label class="text-sm font-medium">Observaciones adicionales</label>
                     <textarea 
-                      name="" 
-                      id=""
-                      value=""
+                      name="notes" 
+                      id="additional_notes"
                       placeholder="Información adicional que consideres relevante..." 
                       class="bg-[#f3f3f5] w-full rounded-md focus:outline-gray-500 p-3 resize-none text-xs min-h-10 placeholder:text-[#8991a0]"></textarea>
                   </div>
 
                 </div>
               </div>
-              <!-- -------------------------------------------------------  fin  ------------------------------------------------------- -->
+              <!-- -------------------------------------------------------  end  ------------------------------------------------------- -->
 
-              <!-- -------------------------------------------------------  Inicio  ------------------------------------------------------- -->
+              <!-- -------------------------------------------------------  Start  ------------------------------------------------------- -->
               <div id="" class="p-5 border rounded-xl flex flex-col border-gray-300 mt-5">
                 <div class="">
                   <!-- title label -->
@@ -143,7 +153,7 @@ export async function newRequestPage() {
                 <div class="flex flex-col gap-3 mt-1">
                   <div class="">
                       <p class="text-sm font-medium">Subir archivos</p>
-                      <label for="fileInput" 
+                      <label for="attachments" 
                         class="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-gray-300 rounded-2xl mt-1 cursor-pointer bg-[#f3f3f5] hover:border-gray-300 hover:bg-[#e9e9e9] transition">
                         
                         <!-- Icono -->
@@ -161,21 +171,21 @@ export async function newRequestPage() {
                         </p>
                         
                         <!-- Input oculto -->
-                        <input type="file" id="fileInput" class="hidden" />
+                        <input type="file" id="attachments" name="attachments" class="hidden" />
                       </label>
                   </div>
                 </div>
               </div>
-              <!-- -------------------------------------------------------  fin  ------------------------------------------------------- -->
+              <!-- -------------------------------------------------------  end  ------------------------------------------------------- -->
               <hr class="my-4 border-t-gray-300">
               <div class="w-full flex gap-3 justify-end">
-                  <button class="px-2 border border-gray-300 rounded-md py-2 flex items-center gap-4 box-border">
+                  <button type="button" class="px-2 border border-gray-300 rounded-md py-2 flex items-center gap-4 box-border cursor-pointer hover:bg-gray-200">
                     <i data-lucide="save" class="w-4 h-4"></i>
                     <span class="text-xs font-medium">
                       Guardar Borrador
                     </span>
                   </button>
-                  <button class="px-2 border bg-black text-white rounded-md py-2 flex items-center gap-4 box-border">
+                  <button type="submit" class="px-2 border bg-black text-white rounded-md py-2 flex items-center gap-4 box-border hover:bg-slate-800 cursor-pointer">
                     <i data-lucide="send" class="w-4 h-4"></i>
                     <span class="text-xs font-medium">
                       Enviar Solicitud
@@ -187,7 +197,30 @@ export async function newRequestPage() {
         </div>
   `;
 
+    // form
+    const form = document.getElementById("form-new-request");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-  // form
+        const formData = new FormData(form);
+        const {
+            notes = null,
+            attachments = null,
+            end_date,
+            reason,
+            start_date,
+            supervisor,
+            type_request,
+            urgent = null,
+        } = Object.fromEntries(formData.entries());
+
+        const res = await api.post('api/v1/')
+
+        try {
+        } catch (error) {
+            alert(err.message);
+        }
+    });
+
     createIcons({ icons });
 }
