@@ -13,6 +13,34 @@ import {
 } from "./pages";
 
 // Rutas
+const roleAccess = {
+    administrator: [
+        "#/dashboard",
+        "#/dashboard/solicitudes",
+        "#/dashboard/nueva-solicitud",
+        "#/dashboard/calendario",
+        "#/dashboard/mi-perfil",
+        "#/dashboard/empleados",
+        "#/dashboard/reportes",
+        "#/dashboard/configuracion",
+    ],
+    employee: [
+        "#/dashboard",
+        "#/dashboard/solicitudes",
+        "#/dashboard/nueva-solicitud",
+        "#/dashboard/calendario",
+        "#/dashboard/mi-perfil",
+    ],
+    boss: [
+        "#/dashboard",
+        "#/dashboard/solicitudes",
+        "#/dashboard/calendario",
+        "#/dashboard/mi-perfil",
+        "#/dashboard/reportes",
+    ],
+};
+
+// Rutas
 const routes = {
     "#/login": loginPage,
     "#/dashboard": dashboardPage,
@@ -30,32 +58,55 @@ export function router() {
     const user = auth.getUser();
     const isAuthenticated = auth.isAuthenticated();
 
-    // Ejemplo: proteger rutas de dashboard
+    // Evitar acceso a dashboard sin estar autenticado
     if (path.startsWith("#/dashboard") && !isAuthenticated) {
-        console.log("Esta authenticado:", { isAuthenticated });
         location.hash = "#/login";
         return;
     }
 
-    if (isAuthenticated) {
-        window.document.getElementById("sidebar").classList.remove("hidden");
-        window.document.getElementById("sidebar").classList.add("flex");
-        console.log(user);
-        
-        window.document.getElementById("personal-info-name").textContent = user.username
-        window.document.getElementById("personal-info-role").textContent = user.role
-    } else {
-        window.document.getElementById("sidebar").classList.remove("flex");
-        window.document.getElementById("sidebar").classList.add("hidden");
-    }
-
-    // Ejemplo: evitar que usuarios logueados accedan a login/register
+    // Evitar que usuarios logueados accedan a login
     if (path === "#/login" && isAuthenticated) {
         location.hash = "#/dashboard";
         return;
     }
 
-    // Load view
+    // Control de acceso por rol
+    if (path.startsWith("#/dashboard") && isAuthenticated) {
+        const allowedRoutes = roleAccess[user.role.toLowerCase()] || [];
+        if (!allowedRoutes.includes(path)) {
+            location.hash = "#/dashboard"; // Redirige a ruta segura
+            return;
+        }
+    }
+
+    // Mostrar u ocultar sidebar y actualizar info personal
+    const sidebar = document.getElementById("sidebar");
+    if (isAuthenticated) {
+        sidebar.classList.remove("hidden");
+        sidebar.classList.add("flex");
+
+        document.getElementById("personal-info-name").textContent =
+            user.username;
+        document.getElementById("personal-info-role").textContent = user.role;
+
+        // Control de visibilidad de links según rol
+        const allowedRoutes = roleAccess[user.role.toLowerCase()] || [];
+
+        const menuLinks = sidebar.querySelectorAll("#menu a");
+
+        menuLinks.forEach((link) => {
+            if (!allowedRoutes.includes(link.getAttribute("href"))) {
+                link.style.display = "none"; // Ocultar link
+            } else {
+                link.style.display = "flex"; // Mostrar link
+            }
+        });
+    } else {
+        sidebar.classList.remove("flex");
+        sidebar.classList.add("hidden");
+    }
+
+    // Renderizar la vista correspondiente
     const view = routes[path];
     if (view) {
         view();

@@ -5,9 +5,9 @@ export const auth = {
     currentUser: null,
     token: null,
 
-    login: async (email, password) => {
+    login: async (email, passwd) => {
         const url = "/api/v1/auth/login";
-        const res = await api.post(url, { email, password });
+        const res = await api.post(url, { email, passwd });
 
         auth.currentUser = res.user;
         auth.token = res.token;
