@@ -1,54 +1,76 @@
 import { api } from "./api/api";
 
-// Simulación de un sistema de autenticación
 export const auth = {
-    currentUser: null,
-    token: null,
+  currentUser: null,
+  token: null,
 
-    login: async (email, passwd) => {
-        const url = "/api/v1/auth/login";
-        const res = await api.post(url, { email, passwd });
+  // Save session in memory + localStorage
+  setSession(user, token) {
+    this.currentUser = user;
+    this.token = token;
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", token);
+  },
 
-        auth.currentUser = res.user;
-        auth.token = res.token;
+  // Clear Session
 
-        localStorage.setItem("user", JSON.stringify(res.user));
-        localStorage.setItem("token", res.token);
+  clearSession() {
+    this.currentUser = null;
+    this.token = null;
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  },
 
-        return res.user;
-    },
+  // Login
+  async login(email, password) {
+    try {
+      const url = "/api/v1/auth/login";
+      const res = await api.post(url, { email, password });
 
-    logout() {
-        this.currentUser = null;
-        this.token = null;
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
-    },
+      if (!res || !res.user || !res.token) {
+        throw new Error("Respuesta inválida del servidor");
+      }
 
-    isAuthenticated() {
-        if (this.currentUser) return true;
+      this.setSession(res.user, res.token);
+      return res.user;
 
-        const savedUser = localStorage.getItem("user");
-        const savedToken = localStorage.getItem("token");
+    } catch (err) {
+      console.error("Error en login:", err.message);
+      throw err;
+    }
+  },
 
-        if (savedUser && savedToken) {
-            this.currentUser = JSON.parse(savedUser);
-            this.token = savedToken;
-            return true;
-        }
+  // Logout
+  logout() {
+    this.clearSession();
+  },
 
-        return false;
-    },
-    
-    getUser() {
-        if (this.currentUser) return this.currentUser;
+  // Validation if there is an active session
+  isAuthenticated() {
+    if (this.currentUser && this.token) return true;
 
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) {
-            this.currentUser = JSON.parse(savedUser);
-            return this.currentUser;
-        }
+    const savedUser = localStorage.getItem("user");
+    const savedToken = localStorage.getItem("token");
 
-        return null;
-    },
+    if (savedUser && savedToken) {
+      this.currentUser = JSON.parse(savedUser);
+      this.token = savedToken;
+      return true;
+    }
+
+    return false;
+  },
+
+  // get user
+  getUser() {
+    if (this.currentUser) return this.currentUser;
+
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      this.currentUser = JSON.parse(savedUser);
+      return this.currentUser;
+    }
+
+    return null;
+  },
 };
