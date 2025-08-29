@@ -1,77 +1,51 @@
 export const api = {
-    base: import.meta.env.VITE_API_URL || "http://localhost:3000",
+  base: import.meta.env.VITE_API_URL_DEV,
 
-    post: async (path, data, token) => {
-        try {
-            const res = await fetch(`${api.base}${path}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    ...(token && { Authorization: `Bearer ${token}` }), // opcional: token
-                },
-                body: JSON.stringify(data),
-            });
+  async request(path, { method = "GET", data, token } = {}) {
+    try {
+      const headers = {
+        ...(data && { "Content-Type": "application/json" }),
+        ...(token && { Authorization: `Bearer ${token}` }),
+      };
 
-            if (!res.ok) {
-                // devuelve info útil del error
-                const errorData = await res.json().catch(() => ({}));
-                throw new Error(
-                    errorData.message || `Error POST ${path}: ${res.status}`
-                );
-            }
+      const res = await fetch(`${this.base}${path}`, {
+        method,
+        headers,
+        ...(data && { body: JSON.stringify(data) }),
+      });
 
-            return await res.json();
-        } catch (err) {
-            console.error("Error en la petición POST:", err);
-            throw err;
-        }
-    },
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || `Error ${method} ${path}: ${res.status}`
+        );
+      }
 
-    get: async (path, token) => {
-        try {
-            const res = await fetch(`${api.base}${path}`, {
-                method: "GET",
-                headers: {
-                    ...(token && { Authorization: `Bearer ${token}` }),
-                },
-            });
+      return await res.json();
+    } catch (err) {
+      console.error(`❌ Error en la petición ${method} ${path}:`, err.message);
+      throw err;
+    }
+  },
 
-            if (!res.ok) {
-                const errorData = await res.json().catch(() => ({}));
-                throw new Error(
-                    errorData.message || `Error GET ${path}: ${res.status}`
-                );
-            }
+  // Métodos convenientes
+  get(path, token) {
+    return this.request(path, { method: "GET", token });
+  },
 
-            return await res.json();
-        } catch (err) {
-            console.error("Error en la petición GET:", err);
-            throw err;
-        }
-    },
+  post(path, data, token) {
+    return this.request(path, { method: "POST", data, token });
+  },
 
-    patch: async (path, data, token) => {
-        try {
-            const res = await fetch(`${api.base}${path}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    ...(token && { Authorization: `Bearer ${token}` }),
-                },
-                body: JSON.stringify(data),
-            });
+  patch(path, data, token) {
+    return this.request(path, { method: "PATCH", data, token });
+  },
 
-            if (!res.ok) {
-                const errorData = await res.json().catch(() => ({}));
-                throw new Error(
-                    errorData.message || `Error PATCH ${path}: ${res.status}`
-                );
-            }
+  put(path, data, token) {
+    return this.request(path, { method: "PUT", data, token });
+  },
 
-            return await res.json();
-        } catch (err) {
-            console.error("Error en la petición PATCH:", err);
-            throw err;
-        }
-    },
+  delete(path, token) {
+    return this.request(path, { method: "DELETE", token });
+  },
 };
