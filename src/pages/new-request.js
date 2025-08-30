@@ -6,11 +6,18 @@ export async function newRequestPage() {
         <div id="new request" class="w-[740px]">
           <div id="title" class="w-full flex flex-col p-5">
             <!-- title -->
-            <div>
-              <h1 class="text-xl font-semibold">Nueva Solicitud</h1>
-              <p class="text-sm text-gray-500">
+            <div class="flex gap-5 items-center">
+              <a href="#/dashboard/requests" class="flex items-center cursor-pointer">
+                <i data-lucide="arrow-left" class="h-5"></i>
+                <span class="font-medium">Back</span>
+              </a>
+
+              <div>
+                <h1 class="text-xl font-semibold">Nueva Solicitud</h1>
+                <p class="text-sm text-gray-500">
                 Completa el formulario para crear una nueva solicitud de trámite
-              </p>
+                </p>
+              </div>
             </div>
 
             <!-- form -->
