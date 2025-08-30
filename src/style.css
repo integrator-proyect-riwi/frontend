@@ -83,3 +83,7 @@ th, td {
   background: var(--priority-urgent-bg);
   color: var(--priority-urgent-text);
 }
+
+select, ::picker(select) {
+  appearance: base-select;
+}
