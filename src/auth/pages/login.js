@@ -163,7 +163,8 @@ export const loginPage = async () => {
                 throw new Error("The fields cannot be left empty");
             }
             
-            await auth.login(e.target.email.value, e.target.passwd.value);
+            await auth.testLogin(e.target.email.value, e.target.passwd.value);
+            // await auth.login(e.target.email.value, e.target.passwd.value);
 
             return (location.hash = "#/dashboard");
         } catch (err) {

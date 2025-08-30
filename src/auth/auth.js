@@ -40,6 +40,22 @@ export const auth = {
     }
   },
 
+    // 🔥 Login de prueba (no usa backend)
+  async testLogin(email = "test@mail.com") {
+    const res = {
+      user: {
+        id: 999,
+        username: "mockuser",
+        email,
+        role: "administrator"
+      },
+      token: "mock-token-abc123",
+    };
+
+    this.setSession(res.user, res.token);
+    return res.user;
+  },
+
   // Logout
   logout() {
     this.clearSession();
