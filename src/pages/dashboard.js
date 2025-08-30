@@ -1,7 +1,6 @@
 import { createIcons, icons } from "lucide";
 
 export async function dashboardPage() {
-    
     document.getElementById("content").innerHTML = `
     <div id="dashboard" class="flex-1">
       <div id="title" class="w-full flex justify-between p-5">
@@ -75,7 +74,5 @@ export async function dashboardPage() {
       </div>
     </div>
   `;
-
-    console.info("Dashboard cargado correctamente");
     createIcons({ icons });
 }
