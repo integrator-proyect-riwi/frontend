@@ -17,28 +17,21 @@ import {
 const roleAccess = {
     administrator: [
         "#/dashboard",
-        "#/dashboard/solicitudes",
-        "#/dashboard/nueva-solicitud",
-        "#/dashboard/calendario",
-        "#/dashboard/mi-perfil",
-        "#/dashboard/empleados",
-        "#/dashboard/reportes",
-        "#/dashboard/configuracion",
+        "#/dashboard/requests",
+        "#/dashboard/new-request",
+        "#/dashboard/calendar",
+        "#/dashboard/my-profile",
+        "#/dashboard/employees",
+        "#/dashboard/reports",
+        "#/dashboard/settings",
     ],
     employee: [
         "#/dashboard",
-        "#/dashboard/solicitudes",
-        "#/dashboard/nueva-solicitud",
-        "#/dashboard/calendario",
-        "#/dashboard/mi-perfil",
-    ],
-    boss: [
-        "#/dashboard",
-        "#/dashboard/solicitudes",
-        "#/dashboard/calendario",
-        "#/dashboard/mi-perfil",
-        "#/dashboard/reportes",
-    ],
+        "#/dashboard/requests",
+        "#/dashboard/new-request",
+        "#/dashboard/calendar",
+        "#/dashboard/my-profile",
+    ]
 };
 
 // Rutas
@@ -46,13 +39,13 @@ const routes = {
     "#/login": loginPage,
     "#/landing": landingPage,
     "#/dashboard": dashboardPage,
-    "#/dashboard/solicitudes": requestPage,
-    "#/dashboard/nueva-solicitud": newRequestPage,
-    "#/dashboard/calendario": calendarPage,
-    "#/dashboard/mi-perfil": myProfilePage,
-    "#/dashboard/empleados": employeesPage,
-    "#/dashboard/reportes": reportsPage,
-    "#/dashboard/configuracion": configurationPage,
+    "#/dashboard/requests": requestPage,
+    "#/dashboard/new-request": newRequestPage,
+    "#/dashboard/calendar": calendarPage,
+    "#/dashboard/my-profile": myProfilePage,
+    "#/dashboard/employees": employeesPage,
+    "#/dashboard/reports": reportsPage,
+    "#/dashboard/settings": configurationPage,
 };
 
 export function router() {

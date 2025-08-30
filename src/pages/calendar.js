@@ -12,7 +12,7 @@ export async function calendarPage() {
               </p>
             </div>
             <div class="flex items-end">
-              <a href="#/dashboard/nueva-solicitud" class="button-primary">
+              <a href="#/dashboard/new-request" class="button-primary">
                 <i data-lucide="plus" class="w-4 h-4"></i>
                 Nueva Solicitud
               </a>
