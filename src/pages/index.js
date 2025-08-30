@@ -6,4 +6,4 @@ export { myProfilePage } from './my-profile';
 export { reportsPage } from './reports';
 export { newRequestPage } from './new-request';
 export { requestPage } from './requests';
-export * from './';
+export { landingPage } from './landing';

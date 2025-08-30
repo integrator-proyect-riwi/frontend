@@ -10,6 +10,7 @@ import {
     reportsPage,
     newRequestPage,
     requestPage,
+    landingPage,
 } from "./pages";
 
 // Rutas
@@ -43,6 +44,7 @@ const roleAccess = {
 // Rutas
 const routes = {
     "#/login": loginPage,
+    "#/landing": landingPage,
     "#/dashboard": dashboardPage,
     "#/dashboard/solicitudes": requestPage,
     "#/dashboard/nueva-solicitud": newRequestPage,
