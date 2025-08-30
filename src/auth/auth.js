@@ -22,10 +22,10 @@ export const auth = {
   },
 
   // Login
-  async login(email, password) {
+  async login(email, passwd) {
     try {
-      const url = "/api/v1/auth/login";
-      const res = await api.post(url, { email, password });
+      const url = "/auth/login";
+      const res = await api.post(url, { email, passwd });
 
       if (!res || !res.user || !res.token) {
         throw new Error("Respuesta inválida del servidor");
