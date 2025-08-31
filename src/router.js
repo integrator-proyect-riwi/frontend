@@ -49,7 +49,7 @@ const routes = {
 };
 
 export function router() {
-    const path = location.hash || "#/login";
+    const path = location.hash || "#/landing";
     const user = auth.getUser();
     const isAuthenticated = auth.isAuthenticated();
 
