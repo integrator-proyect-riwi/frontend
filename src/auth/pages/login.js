@@ -71,7 +71,7 @@ export const loginPage = async () => {
             </div>
             <div>
               <label
-                for="passwd-input"
+                for="password-input"
                 class="block text-sm font-medium text-gray-700 mb-1"
                 >Password</label
               >
@@ -81,9 +81,9 @@ export const loginPage = async () => {
                   class="w-4 h-4 text-gray-500 absolute left-3 outline-gray-500"
                 ></i>
                 <input
-                  id="passwd-input"
+                  id="password-input"
                   type="password"
-                  name="passwd"
+                  name="password"
                   placeholder="Type your password"
                   required
                   class="bg-gray-200 pl-10 py-2 flex-1 rounded outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-sm placeholder:font-medium"
@@ -132,11 +132,11 @@ export const loginPage = async () => {
     const buttons = document.querySelectorAll("[data-role]");
     const roleInput = document.getElementById("role-input");
     const emailInput = document.getElementById("email-input");
-    const passwdInput = document.getElementById("passwd-input");
+    const passwordInput = document.getElementById("password-input");
 
     const demoCredentials = {
-        employee: { email: "employee@enterprise.com", passwd: "admin123" },
-        admin: { email: "admin@enterprise.com", passwd: "empleado123" },
+        employee: { email: "employee@enterprise.com", password: "empleado123" },
+        admin: { email: "admin@enterprise.com", password: "admin123" },
     };
 
     buttons.forEach((btn) => {
@@ -145,7 +145,7 @@ export const loginPage = async () => {
             roleInput.value = role;
 
             emailInput.value = demoCredentials[role].email;
-            passwdInput.value = demoCredentials[role].passwd;
+            passwordInput.value = demoCredentials[role].password;
 
             buttons.forEach((b) =>
                 b.classList.remove("bg-blue-100", "border-blue-500")
@@ -158,13 +158,13 @@ export const loginPage = async () => {
         e.preventDefault();
         try {
             if (
-                e.target.email.value.trim() === "" || e.target.passwd.value.trim() === ""
+                e.target.email.value.trim() === "" || e.target.password.value.trim() === ""
             ) {
                 throw new Error("The fields cannot be left empty");
             }
             
-            await auth.testLogin(e.target.email.value, e.target.passwd.value);
-            // await auth.login(e.target.email.value, e.target.passwd.value);
+            // await auth.testLogin(e.target.email.value, e.target.password.value);
+            await auth.login(e.target.email.value, e.target.password.value);
 
             return (location.hash = "#/dashboard");
         } catch (err) {

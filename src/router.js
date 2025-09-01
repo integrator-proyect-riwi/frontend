@@ -15,7 +15,7 @@ import {
 
 // Rutas
 const roleAccess = {
-    administrator: [
+    admin: [
         "#/dashboard",
         "#/dashboard/requests",
         "#/dashboard/new-request",
@@ -67,7 +67,7 @@ export function router() {
 
     // Control de acceso por rol
     if (path.startsWith("#/dashboard") && isAuthenticated) {
-        const allowedRoutes = roleAccess[user.role.toLowerCase()] || [];
+        const allowedRoutes = roleAccess[user.role] || [];
         if (!allowedRoutes.includes(path)) {
             location.hash = "#/dashboard"; // Redirige a ruta segura
             return;
@@ -76,7 +76,7 @@ export function router() {
 
     // Mostrar u ocultar sidebar y actualizar info personal
     const sidebar = document.getElementById("sidebar");
-    if (isAuthenticated) {
+    if (isAuthenticated && path !== '#/landing') {
         sidebar.classList.remove("hidden");
         sidebar.classList.add("flex");
 
@@ -85,7 +85,7 @@ export function router() {
         document.getElementById("personal-info-role").textContent = user.role;
 
         // Control de visibilidad de links según rol
-        const allowedRoutes = roleAccess[user.role.toLowerCase()] || [];
+        const allowedRoutes = roleAccess[user.role] || [];
 
         const menuLinks = sidebar.querySelectorAll("#menu a");
 

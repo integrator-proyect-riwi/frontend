@@ -1,134 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TramiGO</title>
-    <!-- Development version -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <!-- Production version -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-  </head>
-  <body>
-    <div id="app" class="flex min-h-screen">
-      <div id="sidebar"
-        class="hidden w-[225px] border-r-[1.5px] border-gray-200 flex-col"
-      >
-        <!-- Title menu -->
-        <div class="w-full max-h-[90px] min-h-[90px] box-border border-b-[1.5px] border-gray-200 flex items-center justify-center">
-          <img src="/logo-text-dark.png" alt="" class="max-h-full">
-        </div>
-
-        <!-- info personal -->
-        <div
-          id="personal-info"
-          class="p-4 flex items-center gap-2 box-border border-b-[1.5px] border-gray-200"
-        >
-          <div
-            class="bg-black w-10 h-10 rounded-full flex items-center justify-center text-white"
-          >
-            JD
-          </div>
-          <div class="flex flex-col gap-0">
-            <h2 id="personal-info-name" class="text-sm font-semibold capitalize text-ellipsis"></h2>
-            <span id="personal-info-role" class="text-xs text-gray-500 text-ellipsis"></span>
-          </div>
-        </div>
-
-        <!-- Menu OPtions -->
-        <menu id="menu" class="flex-1 flex flex-col p-2.5 gap-2">
-          <a
-            href="#/dashboard"
-            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
-          >
-            <i data-lucide="layout-dashboard" class="h-5"></i>
-            <span class="font-medium text-black">Dashboard</span>
-          </a>
-          <a
-            href="#/dashboard/requests"
-            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200 relative"
-          >
-            <i data-lucide="file-text" class="h-5"></i>
-            <span class="font-medium text-black">Request</span>
-            <div class="absolute right-4 bg-gray-200 px-2 rounded">
-              <span class="text-xs text-black font-medium">12</span>
-            </div>
-          </a>
-          <a
-            href="#/dashboard/new-request"
-            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
-          >
-            <i data-lucide="plus" class="h-5"></i>
-            <span class="font-medium text-black">New Request</span>
-          </a>
-          <a
-            href="#/dashboard/calendar"
-            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
-          >
-            <i data-lucide="calendar" class="h-5"></i>
-            <span class="font-medium text-black">Calendar</span>
-          </a>
-          <a
-            href="#/dashboard/my-profile"
-            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
-          >
-            <i data-lucide="user-round" class="h-5"></i>
-            <span class="font-medium text-black">My Profile</span>
-          </a>
-          <a
-            href="#/dashboard/employees"
-            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
-          >
-            <i data-lucide="users" class="h-5"></i>
-            <span class="font-medium text-black">Employees</span>
-          </a>
-          <a
-            href="#/dashboard/reports"
-            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
-          >
-            <i data-lucide="chart-column" class="h-5"></i>
-            <span class="font-medium text-black">Reports</span>
-          </a>
-          <a
-            href="#/dashboard/settings"
-            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
-          >
-            <i data-lucide="settings" class="h-5"></i>
-            <span class="font-medium text-black">Settings</span>
-          </a>
-        </menu>
-
-        <!-- actions users / logout / notifications -->
-        <div
-          id=""
-          class="box-border border-t-[1.5px] border-gray-200 flex flex-col p-2.5 gap-2"
-        >
-          <a
-            href="#/dashboard/notifications"
-            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200 relative"
-          >
-            <i data-lucide="bell" class="h-5"></i>
-            <span class="font-medium text-black">Notifications</span>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/png" href="/icon.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TramiGO</title>
+        <!-- Development version -->
+        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+        <!-- Production version -->
+        <script src="https://unpkg.com/lucide@latest"></script>
+    </head>
+    <body>
+        <div id="app" class="flex min-h-screen">
             <div
-              class="absolute right-4 bg-red-500 px-1 py-0.5 rounded flex items-center justify-center"
+                id="sidebar"
+                class="hidden w-[225px] border-r-[1.5px] border-gray-200 flex-col"
             >
-              <span class="text-xs text-white font-medium">12</span>
+                <!-- Title menu -->
+                <div
+                    class="w-full max-h-[90px] min-h-[90px] box-border border-b-[1.5px] border-gray-200 flex items-center justify-center"
+                >
+                    <img src="/logo-text-dark.png" alt="" class="max-h-full" />
+                </div>
+
+                <!-- info personal -->
+                <div
+                    id="personal-info"
+                    class="p-4 flex items-center gap-2 box-border border-b-[1.5px] border-gray-200"
+                >
+                    <div
+                        class="bg-black w-10 h-10 rounded-full flex items-center justify-center text-white"
+                    >
+                        JD
+                    </div>
+                    <div class="flex flex-col gap-0">
+                        <h2
+                            id="personal-info-name"
+                            class="text-sm font-semibold capitalize text-ellipsis"
+                        ></h2>
+                        <span
+                            id="personal-info-role"
+                            class="text-xs text-gray-500 text-ellipsis"
+                        ></span>
+                    </div>
+                </div>
+
+                <!-- Menu OPtions -->
+                <menu id="menu" class="flex-1 flex flex-col p-2.5 gap-2">
+                    <a
+                        href="#/dashboard"
+                        class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+                    >
+                        <i data-lucide="layout-dashboard" class="h-5"></i>
+                        <span class="font-medium text-black">Dashboard</span>
+                    </a>
+                    <a
+                        href="#/dashboard/requests"
+                        class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200 relative"
+                    >
+                        <i data-lucide="file-text" class="h-5"></i>
+                        <span class="font-medium text-black">Request</span>
+                        <div class="absolute right-4 bg-gray-200 px-2 rounded">
+                            <span class="text-xs text-black font-medium"
+                                >12</span
+                            >
+                        </div>
+                    </a>
+                    <a
+                        href="#/dashboard/new-request"
+                        class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+                    >
+                        <i data-lucide="plus" class="h-5"></i>
+                        <span class="font-medium text-black">New Request</span>
+                    </a>
+                    <a
+                        href="#/dashboard/calendar"
+                        class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+                    >
+                        <i data-lucide="calendar" class="h-5"></i>
+                        <span class="font-medium text-black">Calendar</span>
+                    </a>
+                    <a
+                        href="#/dashboard/my-profile"
+                        class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+                    >
+                        <i data-lucide="user-round" class="h-5"></i>
+                        <span class="font-medium text-black">My Profile</span>
+                    </a>
+                    <a
+                        href="#/dashboard/employees"
+                        class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+                    >
+                        <i data-lucide="users" class="h-5"></i>
+                        <span class="font-medium text-black">Employees</span>
+                    </a>
+                    <a
+                        href="#/dashboard/reports"
+                        class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+                    >
+                        <i data-lucide="chart-column" class="h-5"></i>
+                        <span class="font-medium text-black">Reports</span>
+                    </a>
+                    <a
+                        href="#/dashboard/settings"
+                        class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200"
+                    >
+                        <i data-lucide="settings" class="h-5"></i>
+                        <span class="font-medium text-black">Settings</span>
+                    </a>
+                </menu>
+
+                <!-- actions users / logout / notifications -->
+                <div
+                    id=""
+                    class="box-border border-t-[1.5px] border-gray-200 flex flex-col p-2.5 gap-2"
+                >
+                    <a
+                        href="#/dashboard/notifications"
+                        class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-gray-200 rounded cursor-pointer duration-200 relative"
+                    >
+                        <i data-lucide="bell" class="h-5"></i>
+                        <span class="font-medium text-black"
+                            >Notifications</span
+                        >
+                        <div
+                            class="absolute right-4 bg-red-500 px-1 py-0.5 rounded flex items-center justify-center"
+                        >
+                            <span class="text-xs text-white font-medium"
+                                >12</span
+                            >
+                        </div>
+                    </a>
+                    <button
+                        id="logout-button"
+                        class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-red-300 rounded cursor-pointer transition-all"
+                    >
+                        <i data-lucide="log-out" class="h-5"></i>
+                        <span class="font-medium text-black">Logout</span>
+                    </button>
+                </div>
             </div>
-          </a>
-          <button
-            id="logout-button"
-            class="flex items-center gap-4 text-black hover:text-black px-2.5 py-2 hover:bg-red-300 rounded cursor-pointer transition-all"
-          >
-            <i data-lucide="log-out" class="h-5"></i>
-            <span class="font-medium text-black">Logout</span>
-          </button>
+            <!-- view -->
+            <div
+                id="content"
+                class="flex-1 min-h-screen max-h-screen flex justify-center overflow-y-scroll"
+            ></div>
         </div>
-      </div>
-      <!-- view -->
-      <div id="content" class="flex-1 min-h-screen max-h-screen flex justify-center overflow-y-scroll">
-      </div>
-    </div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+        <script type="module" src="/src/main.js"></script>
+    </body>
 </html>

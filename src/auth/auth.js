@@ -1,92 +1,87 @@
-import { api } from "./api/api";
+import { jwtDecode } from "jwt-decode";
+import { api } from "./api/api.js";
 
 export const auth = {
-  currentUser: null,
-  token: null,
+    currentUser: null,
+    token: null,
 
-  // Save session in memory + localStorage
-  setSession(user, token) {
-    this.currentUser = user;
-    this.token = token;
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("token", token);
-  },
+    // Save session in memory + localStorage
+    setSession(user, token) {
+        this.currentUser = user;
+        this.token = token;
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("token", token);
+    },
 
-  // Clear Session
+    // Clear Session
 
-  clearSession() {
-    this.currentUser = null;
-    this.token = null;
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-  },
+    clearSession() {
+        this.currentUser = null;
+        this.token = null;
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+    },
 
-  // Login
-  async login(email, passwd) {
-    try {
-      const url = "/auth/login";
-      const res = await api.post(url, { email, passwd });
+    // Login
+    async login(email, password) {
+        try {
+            const url = "/auth/login";
+            const res = await api.post(url, { email, password });
 
-      if (!res || !res.user || !res.token) {
-        throw new Error("Respuesta inválida del servidor");
-      }
+            if (!res || !res.token) {
+                throw new Error("Respuesta inválida del servidor");
+            }
 
-      this.setSession(res.user, res.token);
-      return res.user;
+            const user = {
+                id: res.id,
+                username: res.username,
+                email: res.email,
+                role: res.role,
+            };
 
-    } catch (err) {
-      console.error("Error en login:", err.message);
-      throw err;
-    }
-  },
+            this.setSession(user, res.token);
+            return user;
+        } catch (err) {
+            console.error("Error en login:", err.message);
+            throw err;
+        }
+    },
 
-    // 🔥 Login de prueba (no usa backend)
-  async testLogin(email = "test@mail.com") {
-    const res = {
-      user: {
-        id: 999,
-        username: "mockuser",
-        email,
-        role: "administrator"
-      },
-      token: "mock-token-abc123",
-    };
+    // Logout
+    logout() {
+        this.clearSession();
+    },
 
-    this.setSession(res.user, res.token);
-    return res.user;
-  },
+    // Validation if there is an active session
+    isAuthenticated() {
+        if (this.currentUser && this.token) return true;
 
-  // Logout
-  logout() {
-    this.clearSession();
-  },
+        const savedUser = localStorage.getItem("user");
+        const savedToken = localStorage.getItem("token");
 
-  // Validation if there is an active session
-  isAuthenticated() {
-    if (this.currentUser && this.token) return true;
+        if (savedUser && savedToken) {
+            this.currentUser = JSON.parse(savedUser);
+            this.token = savedToken;
+            return true;
+        }
 
-    const savedUser = localStorage.getItem("user");
-    const savedToken = localStorage.getItem("token");
+        return false;
+    },
+    // get user
+    getUser() {
+        if (this.currentUser) return this.currentUser;
 
-    if (savedUser && savedToken) {
-      this.currentUser = JSON.parse(savedUser);
-      this.token = savedToken;
-      return true;
-    }
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) {
+            this.currentUser = JSON.parse(savedUser);
+            return this.currentUser;
+        }
 
-    return false;
-  },
-
-  // get user
-  getUser() {
-    if (this.currentUser) return this.currentUser;
-
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      this.currentUser = JSON.parse(savedUser);
-      return this.currentUser;
-    }
-
-    return null;
-  },
+        return null;
+    },
+    getRole() {
+        if (!this.token) return null;
+        const { role } = jwtDecode(this.token); // o jwtDecode.default(this.token)
+        return role; // si el token tiene role
+    },
 };
