@@ -156,19 +156,35 @@ export const loginPage = async () => {
 
     loginForm.onsubmit = async (e) => {
         e.preventDefault();
+
+        const submitBtn = loginForm.querySelector("button[type='submit']");
+        submitBtn.disabled = true; // 🔒 Bloquear botón
+        submitBtn.classList.add("bg-gray-400", "cursor-not-allowed");
+        submitBtn.classList.remove("bg-[#191919]", "hover:bg-[#393939]");
+        submitBtn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Logging in...`;
+
         try {
             if (
-                e.target.email.value.trim() === "" || e.target.password.value.trim() === ""
+                e.target.email.value.trim() === "" ||
+                e.target.password.value.trim() === ""
             ) {
                 throw new Error("The fields cannot be left empty");
             }
-            
-            // await auth.testLogin(e.target.email.value, e.target.password.value);
+
             await auth.login(e.target.email.value, e.target.password.value);
 
             return (location.hash = "#/dashboard");
         } catch (err) {
-            alert('Invalid credentials');
+            alert("Invalid credentials");
+        } finally {
+            // 🔓 Reactivar botón
+            submitBtn.disabled = false;
+            submitBtn.classList.remove("bg-gray-400", "cursor-not-allowed");
+            submitBtn.classList.add("bg-[#191919]", "hover:bg-[#393939]");
+            submitBtn.innerHTML = `<i data-lucide="log-in" class="w-4 h-4"></i> Log in`;
+
+            // recrear íconos de lucide porque el HTML cambió
+            createIcons({ icons });
         }
     };
 
