@@ -1,4 +1,6 @@
 import { createIcons, icons } from "lucide";
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 import { api } from "../auth/api/api";
 import { auth } from "../auth/auth";
 
@@ -13,12 +15,17 @@ export async function requestPage() {
     const priorityClassMap = {
         normal: "status-normal",
         urgent: "status-urgent",
-        low: "status-low", // in proccess
-        high: "status-high", // in proccess
+        low: "status-low",
+        high: "status-high",
     };
 
     const user = auth.getUser();
-    const requests = await api.get("/requests");
+    let requests = []; // declarar afuera para poder reasignar
+
+    async function fetchRequests() {
+        requests = await api.get("/requests");
+        applyFilters(); // vuelve a pintar la tabla con filtros activos
+    }
 
     document.getElementById("content").innerHTML = `
     <div id="dashboard" class="flex-1">
@@ -61,8 +68,8 @@ export async function requestPage() {
                 <option value="Personal Permit">Personal Permit</option>
                 <option value="Training Leave">Training Leave</option>
                 <option value="Compensatory Day">Compensatory Day</option>
-                </select>
-                </div>
+              </select>
+            </div>
             <!-- Status -->
             <div class="w-full relative flex items-center">
               <select id="status-filter" class="w-full bg-gray-200 px-3 py-2 flex-1 rounded text-sm">
@@ -81,14 +88,14 @@ export async function requestPage() {
               <tr class="text-sm bg-gray-100">
                 <th>ID</th>
                 <th>Type</th>
-                <th>Employee</th>
+                <th class="${user.role !== 'admin' ? 'hidden' : ''}">Employee</th>
                 <th>Department</th>
                 <th>Request Date</th>
                 <th>Period</th>
                 <th>Status</th>
                 <th>Priority</th>
                 <th>Supervisor</th>
-                <th>Actions</th>
+                <th class="${user.role !== 'admin' ? 'hidden' : ''}">Actions</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-300"></tbody>
@@ -120,7 +127,6 @@ export async function requestPage() {
         }
 
         if (filters.status) {
-
             filtered = filtered.filter(
                 (req) =>
                     req.status.toLowerCase() === filters.status.toLowerCase()
@@ -136,6 +142,8 @@ export async function requestPage() {
         }
 
         filtered.forEach((req) => {
+          console.log(req);
+          
             const tr = document.createElement("tr");
             const statusClass =
                 statusClassMap[req.status.toLowerCase()] || "status-normal";
@@ -144,11 +152,12 @@ export async function requestPage() {
                 "status-normal";
 
             tr.classList.add("text-sm", "hover:bg-gray-100");
+            tr.dataset.code = req.code;
 
             tr.innerHTML = `
                 <td>${req.code}</td>
                 <td>${req.request_type}</td>
-                <td>${req.employee}</td>
+                <td class="${user.role !== 'admin' ? 'hidden' : ''}">${req.employee}</td>
                 <td>${req.department}</td>
                 <td>${req.request_date}</td>
                 <td>${req.period}</td>
@@ -163,16 +172,51 @@ export async function requestPage() {
                     </p>
                 </td>
                 <td>${req.leader}</td>
-                <td class="hover:bg-gray-200">
+                <td class="${user.role === "employee" ? "hidden" : ""}">
                     ${
-                        user.role === "administrator"
-                            ? '<i data-lucide="ellipsis" class=""></i>'
-                            : "show"
+                        user.role === "admin" &&
+                        req.status.toLowerCase() === "pending"
+                            ? `
+                              <div class="flex gap-2 items-center">
+                                <button class="approve-btn p-1 px-2 rounded-md border border-gray-300 flex gap-1 text-sm items-center h-fit cursor-pointer hover:bg-green-200 transition-all">
+                                  <i data-lucide="circle-check-big" class="w-4 h-4 text-green-600"></i>
+                                  <span>Approve</span>
+                                </button>
+                                <button class="reject-btn p-1 px-2 rounded-md border border-gray-300 flex gap-1 text-sm items-center h-fit cursor-pointer hover:bg-red-200 transition-all">
+                                  <i data-lucide="circle-x" class="w-4 h-4 text-red-600"></i>
+                                  <span>Reject</span>
+                                </button>
+                              </div>`
+                            : `
+                            <div class="flex gap-2 items-center">
+                              <button class=" p-1 px-2 rounded-md border border-gray-300 flex gap-1 text-sm items-center h-fit cursor-pointer hover:bg-slate-200 transition-all">
+                                <i data-lucide="eye" class="w-4 h-4 text-slate-600"></i>
+                                <span>Show</span>
+                              </button>
+                           </div>`
                     }
                 </td>
-    `;
+            `;
             tbody.appendChild(tr);
+
+            // si es admin, buscar los botones dentro de la fila
+            if (
+                user.role === "admin" &&
+                req.status.toLowerCase() === "pending"
+            ) {
+                const approveBtn = tr.querySelector(".approve-btn");
+                const rejectBtn = tr.querySelector(".reject-btn");
+
+                approveBtn?.addEventListener("click", async () => {
+                    await updateRequestStatus(req.code, "approved");
+                });
+
+                rejectBtn?.addEventListener("click", async () => {
+                    await updateRequestStatus(req.code, "rejected");
+                });
+            }
         });
+        createIcons({ icons });
     };
 
     // events
@@ -184,11 +228,36 @@ export async function requestPage() {
         });
     }
 
+    async function updateRequestStatus(code, status) {
+        try {
+            const res = await api.patch(`/requests/${code}/status`, {
+                codename: status,
+            });
+            if (res.message) {
+                iziToast.success({
+                    title: "Success",
+                    message: `Request ${code} updated to ${status}`,
+                    position: "topRight",
+                });
+            }
+            await fetchRequests();
+        } catch (error) {
+            console.error("Error updating status:", error);
+            iziToast.error({
+                title: "Error",
+                message: "Could not update request status.",
+                position: "topRight",
+            });
+        }
+        applyFilters();
+    }
+
     searchInput.addEventListener("input", applyFilters);
     statusSelect.addEventListener("change", applyFilters);
     typeSelect.addEventListener("change", applyFilters);
 
     // initial render
     loadRequests();
+    await fetchRequests();
     createIcons({ icons });
 }

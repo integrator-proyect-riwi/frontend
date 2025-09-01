@@ -18,7 +18,7 @@ const roleAccess = {
     admin: [
         "#/dashboard",
         "#/dashboard/requests",
-        "#/dashboard/new-request",
+        // "#/dashboard/new-request",
         "#/dashboard/calendar",
         "#/dashboard/my-profile",
         "#/dashboard/employees",
@@ -31,7 +31,7 @@ const roleAccess = {
         "#/dashboard/new-request",
         "#/dashboard/calendar",
         "#/dashboard/my-profile",
-    ]
+    ],
 };
 
 // Rutas
@@ -76,7 +76,7 @@ export function router() {
 
     // Mostrar u ocultar sidebar y actualizar info personal
     const sidebar = document.getElementById("sidebar");
-    if (isAuthenticated && path !== '#/landing') {
+    if (isAuthenticated && path !== "#/landing") {
         sidebar.classList.remove("hidden");
         sidebar.classList.add("flex");
 
@@ -86,14 +86,24 @@ export function router() {
 
         // Control de visibilidad de links según rol
         const allowedRoutes = roleAccess[user.role] || [];
-
         const menuLinks = sidebar.querySelectorAll("#menu a");
 
         menuLinks.forEach((link) => {
-            if (!allowedRoutes.includes(link.getAttribute("href"))) {
-                link.style.display = "none"; // Ocultar link
+            const href = link.getAttribute("href");
+
+            // Mostrar/ocultar según rol
+            if (!allowedRoutes.includes(href)) {
+                link.style.display = "none";
             } else {
-                link.style.display = "flex"; // Mostrar link
+                link.style.display = "flex";
+            }
+
+            // 🔥 Resetear estilo activo
+            link.classList.remove("bg-gray-200", "font-bold");
+
+            // 🔥 Si coincide la ruta actual -> marcar activo
+            if (href === path) {
+                link.classList.add("bg-gray-200", "font-bold");
             }
         });
     } else {
