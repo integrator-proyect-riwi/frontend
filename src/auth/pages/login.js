@@ -177,13 +177,12 @@ export const loginPage = async () => {
         } catch (err) {
             alert("Invalid credentials");
         } finally {
-            // 🔓 Reactivar botón
             submitBtn.disabled = false;
             submitBtn.classList.remove("bg-gray-400", "cursor-not-allowed");
             submitBtn.classList.add("bg-[#191919]", "hover:bg-[#393939]");
             submitBtn.innerHTML = `<i data-lucide="log-in" class="w-4 h-4"></i> Log in`;
 
-            // recrear íconos de lucide porque el HTML cambió
+            // recreate lucide icons because the HTML changed
             createIcons({ icons });
         }
     };
